@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <%- include("layouts/header") -%>
+    <body id="page-top" class="g2body">
+        <!-- Navigation-->
+        <%- include("layouts/navbar") -%>
+        <!-- Masthead-->
+        
+        <!-- Contact-->
+        <section class="page-section">
+            <div class="container px-4 px-lg-5">
+
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-lg-8 col-xl-7 text-center">
+                        <h2 class="mt-0 text-black">Appointment page</h2>
+                        <hr class="divider divider-blue" />
+                    </div>
+                    <div class="col-lg-8 col-xl-6 text-center">
+                        <p class="mt-1 fs-6">You can add appointment slots from this page.</p>
+                    </div>
+                </div>
+            </div>
+            <br><br><br>
+            <div class="row">
+                <div class="offset-3 col-6">
+                    <form method="POST" action="/appointment/postDetails">
+                        <div class="row g-3">
+                            <div class="row g-3">
+                                <div class="col-sm-6">
+                                    <label for="date">Date:</label>
+                                    <% var currDate = new Date();
+                                        var maxDate = new Date();
+                                        maxDate.setDate(maxDate.getDate()+30);
+                                    %>
+                                    <input type="date" id="date" name="date" name="trip-start" required
+                                    min=<%= currDate.toISOString().slice(0, 10) %>
+                                    max=<%= maxDate.toISOString().slice(0, 10) %>
+                                    onchange="dateChanged()"
+                                    >
+                                    
+                                    <input id="dateAvailability" name="dateAvailability" hidden="true" value="<%=global.dateAvailability%>">
+                                </div>
+                
+                                <div class="col-sm-6">
+                                    <label for="time">Choose a time for your meeting:</label>
+                                    <select name="time" id="time" disabled required>
+                                        <option></option>
+                                        <option id="9:00" value="9:00">9:00</option>
+                                        <option id="9:30" value="9:30">9:30</option>
+                                        <option id="10:00" value="10:00">10:00</option>
+                                        <option id="10:30" value="10:30">10:30</option>
+                                        <option id="11:00" value="11:00">11:00</option>
+                                        <option id="11:30" value="11:30">11:30</option>
+                                        <option id="12:00" value="12:00">12:00</option>
+                                        <option id="12:30" value="12:30">12:30</option>
+                                        <option id="13:00" value="13:00">13:00</option>
+                                        <option id="13:30" value="13:30">13:30</option>
+                                    </select>
+                                </div>
+                            </div>
+            
+                        </div>
+                        <div class="row g-3 text-center p-5">
+                            <div class="col-sm-12">
+                                <button class="btn btn-primary text-uppercase" id="submitButton" name="submitButton" type="submit">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+        <!-- Footer-->
+        <%- include("layouts/footer")-%>
+        <!-- Bootstrap core JS-->
+        <%- include("layouts/scripts")-%>        
+        <script>
+
+            function dateChanged() {
+                refreshOptions();
+                // console.log("dateChanged method called for date -> " + $(date));
+                // alert("dateChanged method called for date -> " + $(date).val());
+                // alert($(dateAvailability).val() + " contains " + $(dateAvailability).val().includes($(date).val()));
+
+                if($(dateAvailability).val().includes($(date).val())) {
+                    var dateArr = $(dateAvailability).val().split("$");
+                    for(var i = 0; i < dateArr.length; i++) {
+                        if(dateArr[i].includes($(date).val())) {
+                            var dateTimeSplitVar = dateArr[i].split("=");
+                            var timeArr = dateTimeSplitVar[1].split(",");
+                            for(var j = 0; j < timeArr.length; j++) {
+                                // alert(timeArr[j]);
+                                document.getElementById(timeArr[j]).disabled = true;
+                            }
+                        }
+                    }
+                }
+            };
+
+            function refreshOptions() {
+                // alert("Refresh called");
+                $(time).removeAttr('disabled');
+                document.getElementById("9:00").disabled = false;
+                document.getElementById("9:30").disabled = false;
+                document.getElementById("10:00").disabled = false;
+                document.getElementById("10:30").disabled = false;
+                document.getElementById("11:00").disabled = false;
+                document.getElementById("11:30").disabled = false;
+                document.getElementById("12:00").disabled = false;
+                document.getElementById("12:30").disabled = false;
+                document.getElementById("13:00").disabled = false;
+                document.getElementById("13:30").disabled = false;
+            }
+
+        </script>
+    </body>
+</html>

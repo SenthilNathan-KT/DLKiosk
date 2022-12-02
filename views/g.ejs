@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <%- include("layouts/header") -%>
+    <body id="page-top" class="g2body">
+        <!-- Navigation-->
+        <%- include("layouts/navbar") -%>
+        <!-- Masthead-->
+        <!-- Contact-->
+        <section class="page-section" id="contact">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-lg-8 col-xl-7 text-center">
+                        <h2 class="mt-0 text-black">Ready for your G-Test?</h2>
+                        <hr class="divider divider" />
+                    </div>
+                    <div class="col-lg-8 col-xl-6 text-center">
+                        <p class="mt-1 fs-6">You can validate and update your vehicle information in this page</p>
+                    </div>
+                </div>
+            </div>
+            <br><br><br>
+            <div class="row">
+            
+                <% if(userDetail != null ) {%>
+                </h1>
+                    <% if(userDetail.message == null ) {%>
+                        <div class="offset-3 col-6">
+                            <form method="POST" action="/g/updateDetails">
+                                <h4 class="mb-5 text-center fs-2 text-black">Personal Information</h4>
+                                <div class="row g-3">
+                                    <input id="id" name="id" type="hidden" value=<%= userDetail._id %>>
+                                    <div class="col-sm-6">
+                                        <label for="firstName" class="form-label">First name</label>
+                                        <input type="text" class="form-control" id="firstName" name="firstName" disabled value=<%=userDetail.firstName%>>
+                                    </div>
+                    
+                                    <div class="col-sm-6">
+                                        <label for="lastName" class="form-label">Last name</label>
+                                        <input type="text" class="form-control" id="lastName" name="lastName" disabled value=<%=userDetail.lastName%>>
+                                    </div>
+                                </div>
+                                <!-- <div class="row g-3">
+                                    <div class="col-sm-6">
+                                        <label for="licenceNumber" class="form-label">Licence Number</label>
+                                        <input type="text" class="form-control" id="licenceNumber" name="licenceNumber" disabled value=<%=userDetail.licenceNumber%>>
+                                    </div> 
+                                    
+                                </div> -->
+                                <div class="row g-3">
+                                    <div class="col-sm-6">
+                                        <label for="age" class="form-label">Age</label>
+                                        <input type="text" class="form-control" id="age" name="age" disabled value=<%=userDetail.age%>>
+                                        <div class="invalid-feedback">
+                                            Valid first name is required.
+                                        </div>
+                                    </div>
+                    
+                                    <!-- <div class="col-sm-6">
+                                        <label for="dateOfBirth" class="form-label">Date Of Birth</label>
+                                        <input type="text" class="form-control" id="dateOfBirth" name="dateOfBirth" disabled value=<%=userDetail.dateOfBirth%>>
+                                    </div> -->
+                                    
+                                </div>
+                                <br><br>
+                                <h4 class="mb-3">Car Information</h4>
+                                <div class="row g-3">
+                                    <div class="col-sm-4">
+                                        <label for="make" class="form-label">Make</label>
+                                        <input type="text" class="form-control" id="make" name="make" value="<%=(userDetail.carInformation != null) ? userDetail.carInformation.make : ''%>">
+                                        
+                                    </div>
+                    
+                                    <div class="col-sm-4">
+                                        <label for="model" class="form-label">Model</label>
+                                        <input type="text" class="form-control" id="model" name="model" value="<%=(userDetail.carInformation != null) ? userDetail.carInformation.model : ''%>">
+                                        
+                                    </div>
+            
+                                    <div class="col-sm-4">
+                                        <label for="year" class="form-label">Year</label>
+                                        <input type="text" class="form-control" id="year" name="year" value="<%=(userDetail.carInformation != null) ? userDetail.carInformation.year : ''%>">
+                                        
+                                    </div>
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-sm-8">
+                                        <label for="plateNumber" class="form-label">Plate number</label>
+                                        <input type="text" class="form-control" id="plateNumber" name="plateNumber" maxlength=15 value="<%=(userDetail.carInformation != null) ? userDetail.carInformation.plateNumber : ''%>" placeholder="Max 15 Characters">
+                                        
+                                    </div>
+                                </div>
+                                <div class="row g-3 text-center p-5">
+                                    <div class="col-sm-12">
+                                        <button class="btn btn-primary text-uppercase" id="submitButton" name="submitButton" type="submit">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div> 
+                    <%} else {%>
+                        
+                        
+
+
+                        <div class="offset-3 col-6">
+                            <form method="GET" action="/g2">
+                                
+                                <div class="row g-3 text-center p-5">
+                                    <div class="col-sm-12">
+                                        <!-- <h4 class="mb-5 text-center fs-2 text-black">No Info found</h4> -->
+                                        <h5 class="mb-5 text-center fs-4 text-black">No Info found <br> Click here to go to G2 page.</h5>
+                                        <button class="btn btn-primary text-uppercase" id="submitButton" name="submitButton" type="submit">Navigate</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div> 
+
+                    <%}}%>
+
+
+
+
+
+            </div>
+
+
+            
+
+              
+            <!-- <footer class="my-5 pt-5 text-muted text-center text-small">
+                <p class="mb-1">&copy; 2017–2021 Company Name</p>
+                <ul class="list-inline">
+                  <li class="list-inline-item"><a href="#">Privacy</a></li>
+                  <li class="list-inline-item"><a href="#">Terms</a></li>
+                  <li class="list-inline-item"><a href="#">Support</a></li>
+                </ul>
+              </footer> -->
+            </div>
+        </section>
+        <!-- Footer-->
+        <%- include("layouts/footer")-%>
+        <!-- Bootstrap core JS-->
+        <%- include("layouts/scripts")-%>
+    </body>
+</html>

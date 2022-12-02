@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <%- include("layouts/header") -%>
+    <body id="page-top" class="g2body">
+        <!-- Navigation-->
+        <%- include("layouts/navbar") -%>
+        <!-- Masthead-->
+        <!-- Contact-->
+        <section class="page-section" id="contact">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-lg-8 col-xl-7 text-center">
+                        <h2 class="mt-0 text-black">Let's Get In Touch!</h2>
+                        <hr class="divider divider-blue" />
+                    </div>
+                    <div class="col-lg-8 col-xl-6 text-center">
+                        <p class="mt-1 fs-6">Get us your personal and car information to proceed further</p>
+                    </div>
+                </div>
+            </div>
+            <br><br><br>
+            <div class="row">
+                <div class="offset-3 col-6">
+                    <form method="POST" action="/g2/postDetails">
+                        <h4 class="mb-5 text-center fs-2 text-black">Personal Information</h4>
+                        <div class="row g-3">
+                            <div class="col-sm-6">
+                                <label for="firstName" class="form-label">First name</label>
+                                <input type="text" class="form-control" id="firstName" name="firstName" placeholder="" value="<%=(global.isInfoProvided) ? userDetail.firstName : ''%>" required>
+                            </div>
+            
+                            <div class="col-sm-6">
+                                <label for="lastName" class="form-label">Last name</label>
+                                <input type="text" class="form-control" id="lastName" name="lastName" placeholder="" value="<%=(global.isInfoProvided) ? userDetail.lastName : ''%>" required>
+                            </div>
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-sm-6">
+                                <label for="licenceNumber" class="form-label">Licence Number</label>
+                                <input type="text" class="form-control" id="licenceNumber" name="licenceNumber" value="<%=(global.isInfoProvided) ? userDetail.licenceNumber : ''%>" maxlength=10 placeholder="Max 10 Character" required>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="sin" class="form-label">SIN</label>
+                                <!-- <input type="text" class="form-control" id="sin" name="sin" value="289289289"> -->
+                                <input type="number" class="form-control" id="sin" name="sin" value="<%=(global.isInfoProvided) ? userDetail.sin : ''%>" required>
+                                <!-- <div class="invalid-feedback">
+                                    Valid first name is required.
+                                </div> -->
+                            </div>
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-sm-6">
+                                <label for="age" class="form-label">Age</label>
+                                <input type="number" class="form-control" id="age" name="age" min="0"value="<%=(global.isInfoProvided) ? userDetail.age : ''%>" required/>
+                            </div>
+            
+                            <!-- <div class="col-sm-6">
+                                <label for="dateOfBirth" class="form-label">Date Of Birth</label>
+                                <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth" value="<%=(global.isInfoProvided) ? userDetail.dateOfBirth : ''%>" min="01-31-1920" placeholder="MM-DD-YYYY" required/>
+                            </div> -->
+                            
+                        </div>
+                        <br><br>
+                        <h4 class="mb-3">Car Information</h4>
+                        <div class="row g-3">
+                            <div class="col-sm-4">
+                                <label for="make" class="form-label">Make</label>
+                                <input type="text" class="form-control" id="make" name="make" value="<%=(global.isInfoProvided) ? userDetail.carInformation.make : ''%>">
+                            </div>
+            
+                            <div class="col-sm-4">
+                                <label for="model" class="form-label">Model</label>
+                                <!-- <input type="text" class="form-control" id="model" name="model" value="X"> -->
+                                <input type="text" class="form-control" id="model" name="model" value="<%=(global.isInfoProvided) ? userDetail.carInformation.model : ''%>">
+                                <!-- <div class="invalid-feedback">
+                                    Valid last name is required.
+                                </div> -->
+                            </div>
+
+                            <div class="col-sm-4">
+                                <label for="year" class="form-label">Year</label>
+                                <input type="text" class="form-control" id="year" name="year" value="<%=(global.isInfoProvided) ? userDetail.carInformation.year : ''%>">
+                            </div>
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-sm-8">
+                                <label for="plateNumber" class="form-label">Plate number</label>
+                                <input type="text" class="form-control" id="plateNumber" name="plateNumber" maxlength=15  value="<%=(global.isInfoProvided) ? userDetail.carInformation.plateNumber : ''%>" placeholder="Max 15 Characters">
+                            </div>
+                        </div>
+
+                        <% if(userDetail.appointmentId == null || userDetail.appointmentId == undefined) {%>
+                            <div class="row g-3">
+                                <div class="row g-3">
+                                    <div class="col-sm-6">
+                                        <label for="date">Date:</label>
+                                        <% var currDate = new Date();
+                                            var maxDate = new Date();
+                                            maxDate.setDate(maxDate.getDate()+30);
+                                        %>
+                                        <input type="date" id="date" name="date" name="trip-start" required
+                                        min=<%= currDate.toISOString().slice(0, 10) %>
+                                        max=<%= maxDate.toISOString().slice(0, 10) %>
+                                        onchange="dateChanged()"
+                                        >
+                                        
+                                        <input id="dateAvailability" name="dateAvailability" hidden="true" value="<%=global.dateAvailability%>">
+                                    </div>
+                    
+                                    <div class="col-sm-6">
+                                        <label for="time">Choose a time for your meeting:</label>
+                                        <select name="time" id="time" disabled required>
+                                            <option></option>
+                                            <option id="9:00" value="9:00">9:00</option>
+                                            <option id="9:30" value="9:30">9:30</option>
+                                            <option id="10:00" value="10:00">10:00</option>
+                                            <option id="10:30" value="10:30">10:30</option>
+                                            <option id="11:00" value="11:00">11:00</option>
+                                            <option id="11:30" value="11:30">11:30</option>
+                                            <option id="12:00" value="12:00">12:00</option>
+                                            <option id="12:30" value="12:30">12:30</option>
+                                            <option id="13:00" value="13:00">13:00</option>
+                                            <option id="13:30" value="13:30">13:30</option>
+                                        </select>
+                                    </div>
+                                </div>
+                
+                            </div>
+                        <%} else {%>
+                            <p class="pt-5 fs-5 appointmentBookedColor">Your scheduled appointment time is <strong> <%=userDetail.appointmentId.date.toISOString().slice(0,10)%> - <%=userDetail.appointmentId.time%></strong></p>
+                        <%}%>
+                        
+
+                        <div class="row g-3 text-center p-5">
+                            <div class="col-sm-12">
+                                <button class="btn btn-primary text-uppercase" id="submitButton" name="submitButton" type="submit">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            </div>
+        </section>
+        <!-- Footer-->
+        <%- include("layouts/footer")-%>
+        <!-- Bootstrap core JS-->
+        <%- include("layouts/scripts")-%>
+
+        <script>
+
+            function dateChanged() {
+                refreshOptions();
+                // console.log("dateChanged method called for date -> " + $(date));
+                // alert("dateChanged method called for date -> " + $(date).val());
+                // alert($(dateAvailability).val() + " contains " + $(dateAvailability).val().includes($(date).val()));
+
+                if($(dateAvailability).val().includes($(date).val())) {
+                    var dateArr = $(dateAvailability).val().split("$");
+                    for(var i = 0; i < dateArr.length; i++) {
+                        if(dateArr[i].includes($(date).val())) {
+                            var dateTimeSplitVar = dateArr[i].split("=");
+                            var timeArr = dateTimeSplitVar[1].split(",");
+                            for(var j = 0; j < timeArr.length; j++) {
+                                // alert(timeArr[j]);
+                                document.getElementById(timeArr[j]).disabled = false;
+                            }
+                        }
+                    }
+                }
+            };
+
+            function refreshOptions() {
+                // alert("Refresh called");
+                $(time).removeAttr('disabled');
+                document.getElementById("9:00").disabled = true;
+                document.getElementById("9:30").disabled = true;
+                document.getElementById("10:00").disabled = true;
+                document.getElementById("10:30").disabled = true;
+                document.getElementById("11:00").disabled = true;
+                document.getElementById("11:30").disabled = true;
+                document.getElementById("12:00").disabled = true;
+                document.getElementById("12:30").disabled = true;
+                document.getElementById("13:00").disabled = true;
+                document.getElementById("13:30").disabled = true;
+            }
+
+        </script>
+    </body>
+</html>
