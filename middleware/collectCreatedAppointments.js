@@ -7,10 +7,6 @@ module.exports = async(req, res, next) => {
         // console.log("CollectAppointmentMW page try logs " + req.session.userId + " and date selected is " + req.session.currDateSelected);
         let isTimeSlotAvailableFindValues = ["true"];
         // console.log("isTimeSlotAvailableFindValues array - " + isTimeSlotAvailableFindValues)
-        if(req.url == "/g2") {
-            // console.log("Array pop called for " + req.url)
-            isTimeSlotAvailableFindValues.pop();
-        }
         console.log("collectCreatedAppointments -> isTimeSlotAvailableFindValues - " + isTimeSlotAvailableFindValues)
         // appointmentDetails =  Appointment.find(({isTimeSlotAvailable: {$in: isTimeSlotAvailableFindValues}}), (function(err, result) {
         appointmentDetails = await Appointment.find(({isTimeSlotAvailable: {$in: isTimeSlotAvailableFindValues}}))

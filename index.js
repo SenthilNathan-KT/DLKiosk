@@ -20,6 +20,7 @@ const logoutController = require("./controllers/logout");
 const postInfoController = require("./controllers/postInfo");
 const updateInfoController = require("./controllers/updateInfo");
 const appointmentController = require("./controllers/appointment");
+const candidatesController = require("./controllers/candidates");
 const postAppointmentController = require("./controllers/postAppointment");
 const examController = require("./controllers/exam");
 const evaluateController = require("./controllers/evaluate");
@@ -32,6 +33,7 @@ const redirectIfAuthMiddleware = require("./middleware/redirectIfAuth");
 const collectAppointmentMiddleware = require("./middleware/collectAppointments");
 const collectCreatedAppointmentsMiddleware = require("./middleware/collectCreatedAppointments");
 const examinerCheckMiddleware = require("./middleware/examinerCheck");
+const adminCheckMiddleware = require("./middleware/adminCheck");
 
 const app = new express();
 
@@ -39,7 +41,7 @@ global.isInfoProvided = false;
 global.errorMessage = null;
 global.dateAvailability = null;
 
-app.use(expressSession({secret: "kathi537", resave: false, saveUninitialized: true,
+app.use(expressSession({secret: "kathi537nayak113", resave: false, saveUninitialized: true,
              store: mongoStore.create({ mongoUrl: process.env.MONGO_SESSION_URL }) }) );
 
 app.use(express.json());
@@ -76,17 +78,22 @@ app.post("/register", redirectIfAuthMiddleware, storeUserController);
 
 app.post("/login", redirectIfAuthMiddleware, loginUserController);
 
-app.get("/appointment", collectAppointmentMiddleware, appointmentController);
+app.get("/appointment", adminCheckMiddleware, collectAppointmentMiddleware, appointmentController);
 
-app.post("/appointment/postDetails", postAppointmentController);
+app.post("/appointment/postDetails", adminCheckMiddleware, postAppointmentController);
 
 app.get("/exams", examinerCheckMiddleware, examController);
+
+app.post("/exams", examinerCheckMiddleware, examController);
 
 app.post("/correction/:id", examinerCheckMiddleware, evaluateController);
 
 app.get("/correction", examinerCheckMiddleware, evaluateController);
 
 app.post("/updateResult", examinerCheckMiddleware, updateResultController);
+
+app.get("/candidates", adminCheckMiddleware, candidatesController);
+
 
 app.listen(port, () => {
     console.log("App listening on port " + port)

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <%- include("layouts/header") -%>
+    <body id="page-top" class="g2body">
+        <!-- Navigation-->
+        <%- include("layouts/navbar") -%>
+        <!-- Masthead-->
+        
+        <!-- Contact-->
+        <section class="page-section">
+            <div class="container px-4 px-lg-5">
+
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-lg-8 col-xl-7 text-center">
+                        <h2 class="mt-0 text-black">Candidate page</h2>
+                        <hr class="divider divider-blue" />
+                    </div>
+                    <div class="col-lg-8 col-xl-6 text-center">
+                        <p class="mt-1 fs-6">You can find the list of candidates and their status in both G and G2 tests</p>
+                    </div>
+                </div>
+            </div>
+            <br><br><br>
+            
+            <table>
+                                
+                <thead>
+                    <tr>
+                        <th scope="col">User Name</th>
+                        <th scope="col">G2 Result</th>
+                        <th scope="col">G Result</th>
+                    </tr>
+                    <tbody>
+                        <%if(userDetails != undefined && userDetails != null){%>
+                            <%for(var i = 0; i < userDetails.length; i++){%>
+                            
+                                <tr>
+                                    <td><%=userDetails[i].firstName;%> <%=userDetails[i].lastName;%></td>
+                                    <td><%=userDetails[i].isG2Passed == null ? "NA" : (userDetails[i].isG2Passed ? "Pass" : "Fail");%></td>
+                                    <td><%=userDetails[i].isGPassed == null ? "NA" : (userDetails[i].isGPassed? "Pass" : "Fail");%></td>
+                                </tr>
+                            <%}%>
+                        <%}%>
+                    </tbody>
+                </thead>
+                
+            </table>
+        </section>
+        <!-- Footer-->
+        <%- include("layouts/footer")-%>
+        <!-- Bootstrap core JS-->
+        <%- include("layouts/scripts")-%>        
+        
+    </body>
+</html>

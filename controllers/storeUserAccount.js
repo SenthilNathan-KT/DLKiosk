@@ -5,6 +5,7 @@ module.exports = async (req, res) => {
     // try {
         console.log("storeUserAccount.js is running");
         console.log(req.body.password + " -- " + req.body.reenterpassword);
+        
         if(req.body.password != req.body.reenterpassword) {
             global.errorMessage = "Entered password and confirm password does not match";
             // console.log( "SET 1 - " + global.errorMessage + " and is not null = " + global.errorMessage != null);
@@ -23,7 +24,6 @@ module.exports = async (req, res) => {
 
                 req.flash("signUpError", validationErrors);
                 req.flash("data", req.body);
-
             }
         }
     // } catch(error) {
@@ -36,7 +36,17 @@ module.exports = async (req, res) => {
     //     }
     // }
 
-    const {username, password} = req.flash("data")[0];
+    let username = null;
+    let password = null;
+
+    const data = req.flash("data")[0];
+    if(typeof data != "undefined") {
+        username = data.username;
+        password = data.password;
+        console.log("Inside req flash setting code");
+    }
+
+
     res.render("signup", {
         signUpError: req.flash("signUpError"),
         username: username,

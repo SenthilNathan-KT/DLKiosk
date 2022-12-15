@@ -26,6 +26,23 @@
                             <h4 class="mb-5 text-center fs-2 examinerView text-uppercase">Hello Examiner</h4>
                             
 
+                            <form id="filterForm" method="post" action="/exams">
+                                <!-- <select onchange="this.form.submit()" name="filter" id="filter" class="custom-select">
+                                    <option>Select a type to filter</option>
+                                    <option value="all">All</option>
+                                    <option value="g2">G2</option>
+                                    <option value="g">G</option>
+                                </select> -->
+                            
+                                <div class="col-sm-12">
+                                    <span class="examinerCorrectionFields">Please click on a exam type to refresh the page</span> &nbsp;&nbsp;
+                                    <input type="radio" id="g" name="filter" value="g" onchange="this.form.submit()" required>
+                                    <label for="age1">G</label> &nbsp;&nbsp;&nbsp;
+                                    <input type="radio" id="g2" name="filter" value="g2" onchange="this.form.submit()">
+                                    <label for="age2">G2</label><br>  
+                                </div>
+                            </form>
+
                             <table>
                                 
                                 <thead>
@@ -35,6 +52,9 @@
                                         <th scope="col">Date </th>
                                         <th scope="col">Time </th>
                                         <th scope="col">Appointment</th>
+                                        <th scope="col">
+                                        </th>
+                                </tr>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -67,6 +87,11 @@
         <!-- Footer-->
         <%- include("layouts/footer")-%>
         <!-- Bootstrap core JS-->
-        <%- include("layouts/scripts")-%>        
+        <%- include("layouts/scripts")-%>    
+        <script>
+            if(filterType != null) {
+                console.log("Fiulter print -> " + filterType);
+            }
+        </script>    
     </body>
 </html>
