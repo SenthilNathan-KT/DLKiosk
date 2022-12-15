@@ -4,7 +4,7 @@ const express = require("express");
 const ejs = require("ejs");
 const path = require("path");
 const mongoose = require("mongoose");
-const mongoStore = require("connect-mongo");
+// const mongoStore = require("connect-mongo");
 const expressSession = require("express-session");
 const flash = require('connect-flash');
 
@@ -41,8 +41,8 @@ global.isInfoProvided = false;
 global.errorMessage = null;
 global.dateAvailability = null;
 
-app.use(expressSession({secret: "kathi537nayak113", resave: false, saveUninitialized: true,
-             store: mongoStore.create({ mongoUrl: process.env.MONGO_SESSION_URL }) }) );
+// app.use(expressSession({secret: "kathi537nayak113", resave: false, saveUninitialized: true,
+//              store: mongoStore.create({ mongoUrl: process.env.MONGO_SESSION_URL }) }) );
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
