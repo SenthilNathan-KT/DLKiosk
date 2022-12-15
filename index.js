@@ -6,6 +6,8 @@ const path = require("path");
 const mongoose = require("mongoose");
 const mongoStore = require("connect-mongo");
 const expressSession = require("express-session");
+const flash = require('connect-flash');
+
 
 const homeController = require("./controllers/home");
 const gController = require("./controllers/g");
@@ -19,12 +21,17 @@ const postInfoController = require("./controllers/postInfo");
 const updateInfoController = require("./controllers/updateInfo");
 const appointmentController = require("./controllers/appointment");
 const postAppointmentController = require("./controllers/postAppointment");
+const examController = require("./controllers/exam");
+const evaluateController = require("./controllers/evaluate");
+const updateResultController = require("./controllers/updateResult");
 
 
 const authCheckMiddleware = require("./middleware/authCheck");
 const infoCheckMiddleware = require("./middleware/infoCheck");
 const redirectIfAuthMiddleware = require("./middleware/redirectIfAuth");
 const collectAppointmentMiddleware = require("./middleware/collectAppointments");
+const collectCreatedAppointmentsMiddleware = require("./middleware/collectCreatedAppointments");
+const examinerCheckMiddleware = require("./middleware/examinerCheck");
 
 const app = new express();
 
@@ -42,15 +49,18 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 
+app.use(flash());
+
+
 mongoose.connect(process.env.MONGO_URL,{ useNewUrlParser: true });
 
 const port = 3001;
   
 app.get("/", homeController);
 
-app.get("/g", authCheckMiddleware, infoCheckMiddleware, gController);
+app.get("/g", authCheckMiddleware, infoCheckMiddleware, collectCreatedAppointmentsMiddleware, gController);
 
-app.get("/g2", authCheckMiddleware, collectAppointmentMiddleware, g2Controller);
+app.get("/g2", authCheckMiddleware, collectCreatedAppointmentsMiddleware, g2Controller);
 
 app.post("/g2/postDetails", authCheckMiddleware, postInfoController)
 
@@ -62,13 +72,21 @@ app.get("/logout", logoutController);
 
 app.get("/signup", redirectIfAuthMiddleware, signupController);
 
-app.post("/users/register", redirectIfAuthMiddleware, storeUserController);
+app.post("/register", redirectIfAuthMiddleware, storeUserController);
 
-app.post("/users/login", redirectIfAuthMiddleware, loginUserController);
+app.post("/login", redirectIfAuthMiddleware, loginUserController);
 
 app.get("/appointment", collectAppointmentMiddleware, appointmentController);
 
-app.post("/appointment/postDetails", postAppointmentController)
+app.post("/appointment/postDetails", postAppointmentController);
+
+app.get("/exams", examinerCheckMiddleware, examController);
+
+app.post("/correction/:id", examinerCheckMiddleware, evaluateController);
+
+app.get("/correction", examinerCheckMiddleware, evaluateController);
+
+app.post("/updateResult", examinerCheckMiddleware, updateResultController);
 
 app.listen(port, () => {
     console.log("App listening on port " + port)

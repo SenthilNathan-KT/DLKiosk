@@ -14,13 +14,18 @@
                     <div class="col-lg-8 col-xl-6 text-center">
                         <h2 class="mt-0 fs-1">Login page</h2><br>
                         <!-- <hr class="divider" /> -->
-                        <form method="POST" action="/users/login">
+                        <form method="POST" action="/login">
+                            <% if(loginError != undefined && loginError != null ) {%>
+                                <div class="form-floating">
+                                    <p style="color: red; text-align: center;"><%=loginError%></p>
+                                </div>
+                            <%}%>
                             <div class="form-floating">
-                                <input class="form-control" id="username" name="username" type="text" placeholder="Enter your name..." value="ss"/>
+                                <input class="form-control" id="username" name="username" type="text" placeholder="Enter your name..." value="<%=(username != null) ? username : ''%>"/>
                                 <label for="username">Username</label>
                             </div>
                             <div class="form-floating">
-                                <input class="form-control" id="password" name="password" type="password" placeholder="Enter your name..." value="ss"/>
+                                <input class="form-control" id="password" name="password" type="password" placeholder="Enter your name..." value="<%=(password != null) ? password : ''%>"/>
                                 <label for="password">Password</label>
                             </div>
                             <br />

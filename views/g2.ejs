@@ -7,8 +7,18 @@
         <%- include("layouts/navbar") -%>
         <!-- Masthead-->
         <!-- Contact-->
-        <section class="page-section" id="contact">
-            <div class="container px-4 px-lg-5">
+
+        <div class="hero-image" style="background-image: linear-gradient(to bottom, rgb(87 87 87 / 80%) 0%, rgb(123 119 158 / 80%) 100%), url('../assets/img/g2.png');">
+            <div class="hero-text">
+              <h1>Let's Get In Touch!</h1>
+              <hr class="divider divider-blue" />
+              <p>Get us your personal and car information to proceed further</p>
+            </div>
+        </div>
+
+
+        <section class="pb-8rem" id="contact">
+            <!-- <div class="container px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-lg-8 col-xl-7 text-center">
                         <h2 class="mt-0 text-black">Let's Get In Touch!</h2>
@@ -18,13 +28,15 @@
                         <p class="mt-1 fs-6">Get us your personal and car information to proceed further</p>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <br><br><br>
             <div class="row">
                 <div class="offset-3 col-6">
                     <form method="POST" action="/g2/postDetails">
                         <h4 class="mb-5 text-center fs-2 text-black">Personal Information</h4>
                         <div class="row g-3">
+                            <%=console.log("userDetail._id => " + userDetail._id + " and info Provided = " + global.isInfoProvided);%>
+                            <input id="userId" name="userId" type="hidden" value=<%=userDetail._id%>>
                             <div class="col-sm-6">
                                 <label for="firstName" class="form-label">First name</label>
                                 <input type="text" class="form-control" id="firstName" name="firstName" placeholder="" value="<%=(global.isInfoProvided) ? userDetail.firstName : ''%>" required>
@@ -66,13 +78,13 @@
                         <div class="row g-3">
                             <div class="col-sm-4">
                                 <label for="make" class="form-label">Make</label>
-                                <input type="text" class="form-control" id="make" name="make" value="<%=(global.isInfoProvided) ? userDetail.carInformation.make : ''%>">
+                                <input type="text" class="form-control" id="make" name="make" value="<%=(global.isInfoProvided) ? userDetail.carInformation.make : ''%>" required>
                             </div>
             
                             <div class="col-sm-4">
                                 <label for="model" class="form-label">Model</label>
                                 <!-- <input type="text" class="form-control" id="model" name="model" value="X"> -->
-                                <input type="text" class="form-control" id="model" name="model" value="<%=(global.isInfoProvided) ? userDetail.carInformation.model : ''%>">
+                                <input type="text" class="form-control" id="model" name="model" value="<%=(global.isInfoProvided) ? userDetail.carInformation.model : ''%>" required>
                                 <!-- <div class="invalid-feedback">
                                     Valid last name is required.
                                 </div> -->
@@ -80,17 +92,29 @@
 
                             <div class="col-sm-4">
                                 <label for="year" class="form-label">Year</label>
-                                <input type="text" class="form-control" id="year" name="year" value="<%=(global.isInfoProvided) ? userDetail.carInformation.year : ''%>">
+                                <input type="text" class="form-control" id="year" name="year" value="<%=(global.isInfoProvided) ? userDetail.carInformation.year : ''%>" required>
                             </div>
                         </div>
                         <div class="row g-3">
                             <div class="col-sm-8">
                                 <label for="plateNumber" class="form-label">Plate number</label>
-                                <input type="text" class="form-control" id="plateNumber" name="plateNumber" maxlength=15  value="<%=(global.isInfoProvided) ? userDetail.carInformation.plateNumber : ''%>" placeholder="Max 15 Characters">
+                                <input type="text" class="form-control" id="plateNumber" name="plateNumber" maxlength=15  value="<%=(global.isInfoProvided) ? userDetail.carInformation.plateNumber : ''%>" placeholder="Max 15 Characters" required>
                             </div>
                         </div>
 
-                        <% if(userDetail.appointmentId == null || userDetail.appointmentId == undefined) {%>
+                        <% if(userDetail.isG2Passed == true) {%>
+                            <p class="pt-3 fs-6 appointmentBookedColor">Congratulations on passing the G2 driving test. Kindly visit G Page to proceed further.</strong></p>
+                            <% if(userDetail.comments != 'default') {%>
+                                <p class="pt-4 fs-6 appointmentBookedColor">Your previous test comments: <strong class="fs-4"><%=userDetail.comments%></strong></strong></p>
+                            <%}%>
+                        <%} else if (userDetail.appointmentId != null && userDetail.appointmentId.appointmentType == 'G2' && userDetail.appointmentId.isEvaluated != true) {%>
+                            <p class="pt-5 fs-5 appointmentBookedColor">Your scheduled appointment time for G2 test is <strong> <%=userDetail.appointmentId.date.toISOString().slice(0,10)%> - <%=userDetail.appointmentId.time%></strong></p>
+                        <%} else if(userDetail.appointmentId == null || userDetail.isG2Passed == false) {%>
+                            <% if(userDetail.comments != 'default') {%>
+                                <p class="pt-4 fs-6 testFailedColor">Your previous test result: <strong class="fs-4">Fail</strong></strong></p>
+                                <p class="fs-6 testFailedColor">comments: <strong class="fs-4"><%=userDetail.comments%></strong></strong></p>
+                                <p class="fs-6 testFailedColor">You can book slot for your retry</strong></strong></p>
+                            <%}%>
                             <div class="row g-3">
                                 <div class="row g-3">
                                     <div class="col-sm-6">
@@ -111,7 +135,7 @@
                                     <div class="col-sm-6">
                                         <label for="time">Choose a time for your meeting:</label>
                                         <select name="time" id="time" disabled required>
-                                            <option></option>
+                                            <option id="empty"></option>
                                             <option id="9:00" value="9:00">9:00</option>
                                             <option id="9:30" value="9:30">9:30</option>
                                             <option id="10:00" value="10:00">10:00</option>
@@ -127,16 +151,14 @@
                                 </div>
                 
                             </div>
-                        <%} else {%>
-                            <p class="pt-5 fs-5 appointmentBookedColor">Your scheduled appointment time is <strong> <%=userDetail.appointmentId.date.toISOString().slice(0,10)%> - <%=userDetail.appointmentId.time%></strong></p>
-                        <%}%>
-                        
-
-                        <div class="row g-3 text-center p-5">
-                            <div class="col-sm-12">
-                                <button class="btn btn-primary text-uppercase" id="submitButton" name="submitButton" type="submit">Submit</button>
+                            <div class="row g-3 text-center p-5">
+                                <div class="col-sm-12">
+                                    <button class="btn btn-primary text-uppercase" id="submitButton" name="submitButton" type="submit">Submit</button>
+                                </div>
                             </div>
-                        </div>
+                        <%} else {%>
+                            <p class="pt-5 fs-5 appointmentBookedColor">Your scheduled appointment time for G2 test is <strong> <%=userDetail.appointmentId.date.toISOString().slice(0,10)%> - <%=userDetail.appointmentId.time%></strong></p>
+                        <%}%>
                     </form>
                 </div>
             </div>
@@ -184,6 +206,7 @@
                 document.getElementById("12:30").disabled = true;
                 document.getElementById("13:00").disabled = true;
                 document.getElementById("13:30").disabled = true;
+                document.getElementById("time").value = "empty";
             }
 
         </script>

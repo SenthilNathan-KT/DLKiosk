@@ -2,7 +2,7 @@ const { models } = require("mongoose");
 const User = require("../models/Users");
 
 module.exports=(req,res, next) => {
-    console.log("AuthMiddleWare Called, login - " + req.session.userId);
+    console.log("examinerMW Called, login user ID - " + req.session.userId);
     if(!req.session.userId) 
     return res.redirect("/login");
     
@@ -11,8 +11,8 @@ module.exports=(req,res, next) => {
             return res.redirect("/signup");
     })
     
-    if(global.userRole != 'driver') {
-        console.log("AuthMiddleWare Called, User is not a driver, = " + global.userRole);
+    if(global.userRole != 'examiner') {
+        console.log("examinerMiddleWare Called, User is not a examiner, = " + global.userRole);
         return res.redirect("/");
     }
 

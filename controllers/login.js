@@ -3,5 +3,9 @@ module.exports = async(req, res) => {
     console.log(date.toISOString().slice(0, 10));
     date.setDate(date.getDate() + 10);
     console.log(date.toISOString().slice(0, 10));
-    res.render("login");
+    res.render("login", {
+        loginError: null,
+        username: null,
+        password: null,
+    });
 };

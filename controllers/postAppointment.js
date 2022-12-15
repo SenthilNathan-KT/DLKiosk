@@ -7,5 +7,5 @@ module.exports = async (req, res) => {
     } catch (error) {
         console.log("App controller - Error - " + error);
     }
-    res.redirect("/");
+    res.redirect("/appointment");
 }

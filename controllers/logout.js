@@ -3,5 +3,9 @@ module.exports = async(req, res) => {
     global.userRole = null;
     req.session.userId = null;
     console.log("Logout caled - " + global.isInfoProvided  + " , " + global.userRole + " , " + req.session.userId);
-    res.render("login");
+    res.render("login", {
+        loginError: null,
+        username: null,
+        password: null,
+    });
 };

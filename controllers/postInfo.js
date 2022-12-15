@@ -43,7 +43,7 @@ module.exports = async (req, res) => {
         
 
             // console.log("Newwwwwww22  - > " + currAppointmentID);
-            Appointment.findByIdAndUpdate(currAppointmentID, {isTimeSlotAvailable: false})
+            Appointment.findByIdAndUpdate(currAppointmentID, {isTimeSlotAvailable: false, userId: req.body.userId})
                 .then(result => { 
                     // console.log("UpdateResult = " + result) 
                     updateUsers(currAppointmentID);

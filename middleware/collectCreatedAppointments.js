@@ -3,15 +3,17 @@ module.exports = async(req, res, next) => {
     
     var appointmentDetails = null;
     try {
-        console.log("Request URI call for G2 "  + req.url);
-        let isTimeSlotAvailableFindValues = ["false"];
+        console.log("collectCreatedAppointments -> Request URI call for G2  "  + req.url);
+        // console.log("CollectAppointmentMW page try logs " + req.session.userId + " and date selected is " + req.session.currDateSelected);
+        let isTimeSlotAvailableFindValues = ["true"];
+        // console.log("isTimeSlotAvailableFindValues array - " + isTimeSlotAvailableFindValues)
         if(req.url == "/g2") {
+            // console.log("Array pop called for " + req.url)
             isTimeSlotAvailableFindValues.pop();
         }
-        console.log("isTimeSlotAvailableFindValues array 22 - " + isTimeSlotAvailableFindValues)
+        console.log("collectCreatedAppointments -> isTimeSlotAvailableFindValues - " + isTimeSlotAvailableFindValues)
         // appointmentDetails =  Appointment.find(({isTimeSlotAvailable: {$in: isTimeSlotAvailableFindValues}}), (function(err, result) {
-        // appointmentDetails = await Appointment.find(({isTimeSlotAvailable: {$in: isTimeSlotAvailableFindValues}, isEvaluated: false}))
-        appointmentDetails = await Appointment.find()
+        appointmentDetails = await Appointment.find(({isTimeSlotAvailable: {$in: isTimeSlotAvailableFindValues}}))
         .then(result =>  {
             // if (err) { console.log("CollectAppointmentMW page error  " + error); throw err };
             const map = new Map();

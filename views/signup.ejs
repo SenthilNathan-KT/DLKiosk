@@ -14,24 +14,24 @@
                     <div class="col-lg-8 col-xl-6 text-center">
                         <h2 class="mt-0 fs-1">Sign Up page</h2><br>
                         <!-- <hr class="divider" /> -->
-                        <form method="POST" action="/users/register">
-                            <% if(global.errorMessage != null ) {%>
+                        <form method="POST" action="/register">
+                            <% if(signUpError != undefined && signUpError != null ) {%>
                             <div class="form-floating">
-                                <p style="color: red; text-align: center;"><%=global.errorMessage%></p>
-                                <%=global.errorMessage = null%>
+                                <p style="color: red; text-align: center;"><%=signUpError%></p>
+                                
                             </div>
                             <%}%>
                             
                             <div class="form-floating">
-                                <input class="form-control" id="username" name="username" type="text" placeholder="Enter your name"/>
+                                <input class="form-control" id="username" name="username" type="text" placeholder="Enter your name" value="<%=(username != null) ? username : ''%>"/>
                                 <label for="username">Username</label>
                             </div>
                             <div class="form-floating">
-                                <input class="form-control" id="password" name="password" type="password" placeholder="Enter your password"/>
+                                <input class="form-control" id="password" name="password" type="password" placeholder="Enter your password" value="<%=(password != null) ? password : ''%>"/>
                                 <label for="password">Password</label>
                             </div>
                             <div class="form-floating">
-                                <input class="form-control" id="reenterpassword" name="reenterpassword" type="password" placeholder="Re-enter your password"/>
+                                <input class="form-control" id="reenterpassword" name="reenterpassword" type="password" placeholder="Re-enter your password" value="<%=(password != null) ? password : ''%>"/>
                                 <label for="password">Confirm Password</label>
                             </div>
                             <br>

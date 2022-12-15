@@ -6,7 +6,7 @@ module.exports = async (req, res) => {
         console.log("G Page - ID from session = " + req.session.userId)
         userDetail = await Users.findOne({
             _id: req.session.userId,
-        }).lean();
+        }).populate("appointmentId").lean();
         if(userDetail != null){
             // if(userDetail.firstName != null) {
             //     userDetail.dateOfBirth = userDetail.dateOfBirth.getMonth()+1 + "-" + userDetail.dateOfBirth.getDate() + "-" + userDetail.dateOfBirth.getFullYear();

@@ -7,8 +7,15 @@
         <%- include("layouts/navbar") -%>
         <!-- Masthead-->
         <!-- Contact-->
-        <section class="page-section" id="contact">
-            <div class="container px-4 px-lg-5">
+        <div class="hero-image" style="background-image: linear-gradient(to bottom, rgb(87 87 87 / 80%) 0%, rgb(123 119 158 / 80%) 100%), url('../assets/img/g.jpeg');">
+            <div class="hero-text">
+              <h1>Ready for your G-Test?</h1>
+              <hr class="divider divider-blue" />
+              <p>You can validate and update your vehicle information in this page</p>
+            </div>
+        </div>
+        <section class="pb-8rem" id="contact">
+            <!-- <div class="container px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-lg-8 col-xl-7 text-center">
                         <h2 class="mt-0 text-black">Ready for your G-Test?</h2>
@@ -18,7 +25,7 @@
                         <p class="mt-1 fs-6">You can validate and update your vehicle information in this page</p>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <br><br><br>
             <div class="row">
             
@@ -29,7 +36,7 @@
                             <form method="POST" action="/g/updateDetails">
                                 <h4 class="mb-5 text-center fs-2 text-black">Personal Information</h4>
                                 <div class="row g-3">
-                                    <input id="id" name="id" type="hidden" value=<%= userDetail._id %>>
+                                    <input id="userId" name="userId" type="hidden" value=<%=userDetail._id%>>
                                     <div class="col-sm-6">
                                         <label for="firstName" class="form-label">First name</label>
                                         <input type="text" class="form-control" id="firstName" name="firstName" disabled value=<%=userDetail.firstName%>>
@@ -40,13 +47,6 @@
                                         <input type="text" class="form-control" id="lastName" name="lastName" disabled value=<%=userDetail.lastName%>>
                                     </div>
                                 </div>
-                                <!-- <div class="row g-3">
-                                    <div class="col-sm-6">
-                                        <label for="licenceNumber" class="form-label">Licence Number</label>
-                                        <input type="text" class="form-control" id="licenceNumber" name="licenceNumber" disabled value=<%=userDetail.licenceNumber%>>
-                                    </div> 
-                                    
-                                </div> -->
                                 <div class="row g-3">
                                     <div class="col-sm-6">
                                         <label for="age" class="form-label">Age</label>
@@ -55,46 +55,98 @@
                                             Valid first name is required.
                                         </div>
                                     </div>
-                    
-                                    <!-- <div class="col-sm-6">
-                                        <label for="dateOfBirth" class="form-label">Date Of Birth</label>
-                                        <input type="text" class="form-control" id="dateOfBirth" name="dateOfBirth" disabled value=<%=userDetail.dateOfBirth%>>
-                                    </div> -->
                                     
                                 </div>
                                 <br><br>
                                 <h4 class="mb-3">Car Information</h4>
+                                <h4 class="mb-2 fs-6 pb-sm-3">You can change the vehicle information while taking G test after clearing G2 Test.</h4>
                                 <div class="row g-3">
                                     <div class="col-sm-4">
                                         <label for="make" class="form-label">Make</label>
-                                        <input type="text" class="form-control" id="make" name="make" value="<%=(userDetail.carInformation != null) ? userDetail.carInformation.make : ''%>">
+                                        <input type="text" class="form-control" id="make" name="make" value="<%=(userDetail.carInformation != null) ? userDetail.carInformation.make : ''%>" <%if (userDetail.isGPassed == true || userDetail.isG2Passed != true ) {%> disabled <%}%>>
                                         
                                     </div>
                     
                                     <div class="col-sm-4">
                                         <label for="model" class="form-label">Model</label>
-                                        <input type="text" class="form-control" id="model" name="model" value="<%=(userDetail.carInformation != null) ? userDetail.carInformation.model : ''%>">
+                                        <input type="text" class="form-control" id="model" name="model" value="<%=(userDetail.carInformation != null) ? userDetail.carInformation.model : ''%>" <%if (userDetail.isGPassed == true || userDetail.isG2Passed != true ) {%> disabled <%}%>>
                                         
                                     </div>
             
                                     <div class="col-sm-4">
                                         <label for="year" class="form-label">Year</label>
-                                        <input type="text" class="form-control" id="year" name="year" value="<%=(userDetail.carInformation != null) ? userDetail.carInformation.year : ''%>">
+                                        <input type="text" class="form-control" id="year" name="year" value="<%=(userDetail.carInformation != null) ? userDetail.carInformation.year : ''%>" <%if (userDetail.isGPassed == true || userDetail.isG2Passed != true ) {%> disabled <%}%>>
                                         
                                     </div>
                                 </div>
                                 <div class="row g-3">
                                     <div class="col-sm-8">
                                         <label for="plateNumber" class="form-label">Plate number</label>
-                                        <input type="text" class="form-control" id="plateNumber" name="plateNumber" maxlength=15 value="<%=(userDetail.carInformation != null) ? userDetail.carInformation.plateNumber : ''%>" placeholder="Max 15 Characters">
+                                        <input type="text" class="form-control" id="plateNumber" name="plateNumber" maxlength=15 value="<%=(userDetail.carInformation != null) ? userDetail.carInformation.plateNumber : ''%>" placeholder="Max 15 Characters" <%if (userDetail.isGPassed == true || userDetail.isG2Passed != true ) {%> disabled <%}%>>
                                         
                                     </div>
                                 </div>
-                                <div class="row g-3 text-center p-5">
-                                    <div class="col-sm-12">
-                                        <button class="btn btn-primary text-uppercase" id="submitButton" name="submitButton" type="submit">Submit</button>
+
+
+                                <% if(userDetail.isGPassed != undefined && userDetail.isGPassed == true) {%>
+                                    <p class="pt-3 fs-5 appointmentBookedColor">Congratulations on passing your G driving test. You are a certified driver now.</strong></p>
+                                    <% if(userDetail.comments != 'default') {%>
+                                        <p class="pt-4 fs-6 appointmentBookedColor">Your previous test comments: <strong class="fs-4"><%=userDetail.comments%></strong></strong></p>
+                                    <%}%>
+                                <%} else if(userDetail.appointmentId!= null && userDetail.appointmentId.appointmentType == 'G' && userDetail.appointmentId.isEvaluated != true) { %>
+                                    <p class="pt-4 fs-6 appointmentBookedColor">Your previous test comments: <strong class="fs-4"><%=userDetail.comments%></strong></strong></p>
+                                    <p class="pt-5 fs-5 appointmentBookedColor">Your scheduled appointment time for G test is <strong> <%=userDetail.appointmentId.date.toISOString().slice(0,10)%> - <%=userDetail.appointmentId.time%></strong></p>
+                                <%} else if(userDetail.isGPassed != true && userDetail.isG2Passed == true) {%>
+                                    <% if(userDetail.comments != 'default') {%>
+                                        <p class="pt-4 fs-6 appointmentBookedColor">Your previous test comments: <strong class="fs-4"><%=userDetail.comments%></strong></strong></p>
+                                    <%}%>
+                                    <div class="row g-3">
+                                        <div class="row g-3">
+                                            <div class="col-sm-6">
+                                                <label for="date">Date:</label>
+                                                <% var currDate = new Date();
+                                                    var maxDate = new Date();
+                                                    maxDate.setDate(maxDate.getDate()+30);
+                                                %>
+                                                <input type="date" id="date" name="date" name="trip-start" required
+                                                min=<%= currDate.toISOString().slice(0, 10) %>
+                                                max=<%= maxDate.toISOString().slice(0, 10) %>
+                                                onchange="dateChanged()"
+                                                >
+                                                
+                                                <input id="dateAvailability" name="dateAvailability" hidden="true" value="<%=global.dateAvailability%>">
+                                            </div>
+                            
+                                            <div class="col-sm-6">
+                                                <label for="time">Choose a time for your meeting:</label>
+                                                <select name="time" id="time" disabled required>
+                                                    <option id="empty"></option>
+                                                    <option id="9:00" value="9:00">9:00</option>
+                                                    <option id="9:30" value="9:30">9:30</option>
+                                                    <option id="10:00" value="10:00">10:00</option>
+                                                    <option id="10:30" value="10:30">10:30</option>
+                                                    <option id="11:00" value="11:00">11:00</option>
+                                                    <option id="11:30" value="11:30">11:30</option>
+                                                    <option id="12:00" value="12:00">12:00</option>
+                                                    <option id="12:30" value="12:30">12:30</option>
+                                                    <option id="13:00" value="13:00">13:00</option>
+                                                    <option id="13:30" value="13:30">13:30</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                        
                                     </div>
-                                </div>
+                                    <div class="row g-3 text-center p-5">
+                                        <div class="col-sm-12">
+                                            <button class="btn btn-primary text-uppercase" id="submitButton" name="submitButton" type="submit">Submit</button>
+                                        </div>
+                                    </div>
+                                <%} else {%>
+
+                                    <%if(userDetail.isG2Passed != true) {%>
+                                        <p class="pt-5 fs-5 testFailedColor">You need to complete G2 test before G. Kindly go to G2 page. </strong></p>
+                                    <%}%>
+                                <%}%>
                             </form>
                         </div> 
                     <%} else {%>
@@ -141,5 +193,46 @@
         <%- include("layouts/footer")-%>
         <!-- Bootstrap core JS-->
         <%- include("layouts/scripts")-%>
+
+        <script>
+
+            function dateChanged() {
+                refreshOptions();
+                // console.log("dateChanged method called for date -> " + $(date));
+                // alert("dateChanged method called for date -> " + $(date).val());
+                // alert($(dateAvailability).val() + " contains " + $(dateAvailability).val().includes($(date).val()));
+
+                if($(dateAvailability).val().includes($(date).val())) {
+                    var dateArr = $(dateAvailability).val().split("$");
+                    for(var i = 0; i < dateArr.length; i++) {
+                        if(dateArr[i].includes($(date).val())) {
+                            var dateTimeSplitVar = dateArr[i].split("=");
+                            var timeArr = dateTimeSplitVar[1].split(",");
+                            for(var j = 0; j < timeArr.length; j++) {
+                                // alert(timeArr[j]);
+                                document.getElementById(timeArr[j]).disabled = false;
+                            }
+                        }
+                    }
+                }
+            };
+
+            function refreshOptions() {
+                // alert("Refresh called");
+                $(time).removeAttr('disabled');
+                document.getElementById("9:00").disabled = true;
+                document.getElementById("9:30").disabled = true;
+                document.getElementById("10:00").disabled = true;
+                document.getElementById("10:30").disabled = true;
+                document.getElementById("11:00").disabled = true;
+                document.getElementById("11:30").disabled = true;
+                document.getElementById("12:00").disabled = true;
+                document.getElementById("12:30").disabled = true;
+                document.getElementById("13:00").disabled = true;
+                document.getElementById("13:30").disabled = true;
+                document.getElementById("time").value = "empty";
+            }
+
+        </script>
     </body>
 </html>
